@@ -10,20 +10,67 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   </head>
-  <body>
+  <body ng-app="seguridad" ng-controller="comentarios">
     <h1>Formulario inseguro </h1>
-    <form action="/comentario" method="POST">
+
+    <form >
       <div class="form-group">
         <label >Titulo</label>
-        <input type="text" class="form-control" name="titulo">
+        <input type="text" class="form-control" ng-model="comentario.titulo">
       </div>
       <div class="form-group">
         <label >Texto</label>
-        <input type="text" class="form-control" name="texto">
+        <input type="text" class="form-control" ng-model="comentario.texto">
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button ng-click="agregar()" type="submit" class="btn btn-primary">Submit</button>
     </form>
+
+
+
+    <div class="container">
+      <h3>Comentarios</h2>
+        <div class="" ng-repeat="comentario in comentarios">
+          <h4>Titulo: {{comentario.titulo}}
+          </h4>
+          <h4>Texto: {{comentario.texto}}
+          </h4>
+        </div>
+    </div>
+
+
+  <script>
+    var app = angular.module('seguridad', []);
+    app.controller('comentarios', function($scope, $http) {
+      $scope.comentarios = [];
+      $scope.comentario = {};
+
+      $http.get("/comentarios")
+              .then(function (response) {
+                  $scope.comentarios = response.data;
+                  console.log($scope.comentarios);
+              }
+      );
+
+      $scope.agregar = function() {
+          //$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+          //console.log("post method");
+            $http.post("/comentario", {
+                titulo: $scope.comentario.titulo,
+                texto: $scope.comentario.titulo
+            }).success(function(response){
+                console.log(resonse.data);
+                //$route.reload();
+                $scope.comentario = {};
+            });
+        }
+
+
+
+
+    });
+  </script>
   </body>
 </html>

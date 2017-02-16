@@ -23,12 +23,12 @@ router.post('/comentario', function(req, res, next){
     console.log([titulo, texto]);
     //var query = 'insert into comentarios (titulo, texto) values (' + titulo + ',' + texto + ')';
     //console.log(query);
-    connection.query("insert into comentarios ?", [titulo, texto], function (error, results, fields) {
+    connection.query("insert into comentarios values ?", [titulo, texto], function (error, results, fields) {
       if (error) {
         return error;
       } else {
-        console.log(fields);
         console.log(results);
+        console.log(fields);
       }
     });
 });
@@ -37,7 +37,7 @@ router.post('/comentario', function(req, res, next){
 router.get('/comentarios', function(req, res, next){
     var query = 'select * from comentarios';
     var data = [];
-    console.log(query);
+    //console.log(query);
     connection.query(query, function (error, results, fields) {
       if (error) {
         return error;
