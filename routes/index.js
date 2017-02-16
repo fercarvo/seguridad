@@ -20,15 +20,11 @@ router.get('/', function(req, res, next) {
 router.post('/comentario', function(req, res, next){
     var titulo = req.body.titulo;
     var texto = req.body.texto;
-    console.log([titulo, texto]);
-    //var query = 'insert into comentarios (titulo, texto) values (' + titulo + ',' + texto + ')';
-    //console.log(query);
     connection.query("insert into comentarios values ?", [titulo, texto], function (error, results, fields) {
       if (error) {
         return error;
       } else {
-        console.log(results);
-        console.log(fields);
+        res.render('index');
       }
     });
 });
